@@ -1,0 +1,13 @@
+.gameInputGroup {
+  margin-top: 20px;
+  display: flex;
+}
+
+.gameInputGroup > :not(:last-child) {
+  margin-right: 20px;
+}
+
+.gameInput {
+  width: 200px;
+  font-size: 26px;
+}
