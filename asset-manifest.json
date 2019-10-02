@@ -1,0 +1,16 @@
+{
+  "files": {
+    "main.css": "/snippet-trainer/static/css/main.6fdd91ba.chunk.css",
+    "main.js": "/snippet-trainer/static/js/main.29e0fca1.chunk.js",
+    "main.js.map": "/snippet-trainer/static/js/main.29e0fca1.chunk.js.map",
+    "runtime-main.js": "/snippet-trainer/static/js/runtime-main.ea18cbcc.js",
+    "runtime-main.js.map": "/snippet-trainer/static/js/runtime-main.ea18cbcc.js.map",
+    "static/js/2.7a047dfd.chunk.js": "/snippet-trainer/static/js/2.7a047dfd.chunk.js",
+    "static/js/2.7a047dfd.chunk.js.map": "/snippet-trainer/static/js/2.7a047dfd.chunk.js.map",
+    "index.html": "/snippet-trainer/index.html",
+    "precache-manifest.e33223666a931863d3155406ac20771e.js": "/snippet-trainer/precache-manifest.e33223666a931863d3155406ac20771e.js",
+    "service-worker.js": "/snippet-trainer/service-worker.js",
+    "static/css/main.6fdd91ba.chunk.css.map": "/snippet-trainer/static/css/main.6fdd91ba.chunk.css.map",
+    "static/media/logo.svg": "/snippet-trainer/static/media/logo.25bf045c.svg"
+  }
+}
