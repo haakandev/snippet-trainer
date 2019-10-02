@@ -1,4 +1,6 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useCallback, useEffect, useRef, useState } from 'react';
+import Button from '@material-ui/core/Button';
+import styles from './Game.module.css';
 import { Container, Scoreboard, Snippet } from '../components';
 import defaultSnippets from '../defaultSnippets';
 
@@ -10,30 +12,35 @@ const getRandomSnippetKey = () => snippetKeys[Math.floor(Math.random() * snippet
 const Game = () => {
   const inputEl = useRef(null);
   const [currentSnippetKey, setCurrentSnippetKey] = useState(null);
-  const [currentScore, setCurrentScore] = useState({ completed: 0, failedAttempts: 0 });
+  const [currentScore, setCurrentScore] = useState({ completed: 0, failedAttempts: 0, skipped: 0 });
   const [usedSnippets, setUsedSnippets] = useState([]);
+  const submit = useCallback(() => {
+    if (inputEl.current.value !== '') {
+      if (inputEl.current.value === snippets[currentSnippetKey].prefix) {
+        setUsedSnippets(k => [...k, currentSnippetKey]);
+        setCurrentScore(oldScore => ({ ...oldScore, completed: oldScore.completed + 1 }));
+        inputEl.current.value = '';
+      } else {
+        setCurrentScore(oldScore => ({
+          ...oldScore,
+          failedAttempts: oldScore.failedAttempts + 1,
+        }));
+      }
+    }
+  }, [currentSnippetKey]);
 
   useEffect(() => {
     const onSubmit = event => {
       if (event.keyCode === 13) {
         event.preventDefault();
-        if (inputEl.current.value === snippets[currentSnippetKey].prefix) {
-          setUsedSnippets(k => [...k, currentSnippetKey]);
-          setCurrentScore(oldScore => ({ ...oldScore, completed: oldScore.completed + 1 }));
-          inputEl.current.value = '';
-        } else {
-          setCurrentScore(oldScore => ({
-            ...oldScore,
-            failedAttempts: oldScore.failedAttempts + 1,
-          }));
-        }
+        submit();
       }
     };
     window.addEventListener('keyup', onSubmit);
     return () => {
       window.removeEventListener('keyup', onSubmit);
     };
-  }, [currentSnippetKey]);
+  }, [currentSnippetKey, submit]);
 
   useEffect(() => {
     let nextSnippetKey = getRandomSnippetKey();
@@ -43,13 +50,26 @@ const Game = () => {
     setCurrentSnippetKey(nextSnippetKey);
   }, [usedSnippets]);
 
+  const skip = () => {
+    setUsedSnippets(k => [...k, currentSnippetKey]);
+    setCurrentScore(oldScore => ({ ...oldScore, skipped: oldScore.skipped + 1 }));
+  };
+
   return (
     <Container>
       <Scoreboard score={currentScore} />
       {currentSnippetKey && (
         <Snippet snippet={{ [currentSnippetKey]: snippets[currentSnippetKey] }} />
       )}
-      <input ref={inputEl} type="text" />
+      <input className={styles.gameInput} ref={inputEl} type="text" />
+      <div className={styles.gameInputGroup}>
+        <Button onClick={submit} color="primary" variant="contained">
+          Submit
+        </Button>
+        <Button size="small" onClick={skip} variant="contained">
+          Skip
+        </Button>
+      </div>
     </Container>
   );
 };
