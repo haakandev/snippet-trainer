@@ -11,6 +11,11 @@ const Container = ({ children, center }) => {
 
 Container.propTypes = {
   children: PropTypes.node.isRequired,
+  center: PropTypes.bool,
+};
+
+Container.defaultProps = {
+  center: false,
 };
 
 export default Container;
