@@ -72,7 +72,7 @@ const Game = ({ onEnd }) => {
     if (currentScore.completed >= MAX_COMPLETED_SNIPPETS || remainingSnippets <= 0) {
       setGameOver(true);
     }
-  }, [currentScore]);
+  }, [currentScore, usedSnippets]);
 
   const skip = () => {
     setUsedSnippets(k => [...k, currentSnippetKey]);

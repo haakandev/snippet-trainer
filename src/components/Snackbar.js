@@ -70,10 +70,14 @@ function CustomSnackbarContentWrapper(props) {
 }
 
 CustomSnackbarContentWrapper.propTypes = {
-  className: PropTypes.string.isRequired,
+  className: PropTypes.string,
   message: PropTypes.string.isRequired,
   onClose: PropTypes.func.isRequired,
   variant: PropTypes.oneOf(['error', 'info', 'success', 'warning']).isRequired,
+};
+
+CustomSnackbarContentWrapper.defaultProps = {
+  className: '',
 };
 
 const CustomSnackbar = ({ open, handleClose, variant, message }) => {
