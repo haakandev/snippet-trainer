@@ -9,7 +9,7 @@ const App = () => {
     return <Home onStart={() => setGameActive(true)} />;
   }
 
-  return <Game />;
+  return <Game onEnd={() => setGameActive(false)} />;
 };
 
 export default App;
