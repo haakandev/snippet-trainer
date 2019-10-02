@@ -14,6 +14,8 @@ const Game = () => {
   const [currentSnippetKey, setCurrentSnippetKey] = useState(null);
   const [currentScore, setCurrentScore] = useState({ completed: 0, failedAttempts: 0, skipped: 0 });
   const [usedSnippets, setUsedSnippets] = useState([]);
+  const [seconds, setSeconds] = useState(0);
+
   const submit = useCallback(() => {
     if (inputEl.current.value !== '') {
       if (inputEl.current.value === snippets[currentSnippetKey].prefix) {
@@ -43,6 +45,14 @@ const Game = () => {
   }, [currentSnippetKey, submit]);
 
   useEffect(() => {
+    let interval = null;
+    interval = setInterval(() => {
+      setSeconds(s => s + 1);
+    }, 1000);
+    return () => clearInterval(interval);
+  }, []);
+
+  useEffect(() => {
     let nextSnippetKey = getRandomSnippetKey();
     while (usedSnippets.includes(nextSnippetKey)) {
       nextSnippetKey = getRandomSnippetKey();
@@ -57,7 +67,7 @@ const Game = () => {
 
   return (
     <Container>
-      <Scoreboard score={currentScore} />
+      <Scoreboard score={currentScore} time={seconds} />
       {currentSnippetKey && (
         <Snippet snippet={{ [currentSnippetKey]: snippets[currentSnippetKey] }} />
       )}
