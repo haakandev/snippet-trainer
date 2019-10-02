@@ -1,4 +1,5 @@
 import React, { useCallback, useEffect, useRef, useState } from 'react';
+import PropTypes from 'prop-types';
 import Button from '@material-ui/core/Button';
 import styles from './Game.module.css';
 import { Container, Scoreboard, Snippet } from '../components';
@@ -12,7 +13,7 @@ const snippets = defaultSnippets;
 
 const getRandomSnippetKey = () => snippetKeys[Math.floor(Math.random() * snippetKeys.length)];
 
-const Game = () => {
+const Game = ({ onEnd }) => {
   const inputEl = useRef(null);
   const [currentSnippetKey, setCurrentSnippetKey] = useState(null);
   const [currentScore, setCurrentScore] = useState({ completed: 0, failedAttempts: 0, skipped: 0 });
@@ -84,6 +85,7 @@ const Game = () => {
     }
 
     setGameOver(false);
+    onEnd();
   };
 
   return (
@@ -111,6 +113,10 @@ const Game = () => {
       />
     </Container>
   );
+};
+
+Game.propTypes = {
+  onEnd: PropTypes.func.isRequired,
 };
 
 export default Game;

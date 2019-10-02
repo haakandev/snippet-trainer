@@ -4,7 +4,6 @@ import ScoreChip from '../ScoreChip';
 import styles from './Scoreboard.module.css';
 
 const Scoreboard = ({ score: { completed, failedAttempts, skipped }, time }) => {
-  console.log('seconds', time);
   return (
     <div className={styles.scoreWrapper}>
       <div>

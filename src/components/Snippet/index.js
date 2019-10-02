@@ -23,7 +23,6 @@ const Snippet = ({ snippet }) => {
       <SyntaxHighlighter language="javascript" style={a11yDark} customStyle={{ textAlign: 'left' }}>
         {snippetBody}
       </SyntaxHighlighter>
-      <p>Prefix: {snippetDetails.prefix}</p>
     </div>
   );
 };
