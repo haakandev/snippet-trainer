@@ -1,10 +1,13 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import ScoreChip from '../ScoreChip';
+import styles from './Scoreboard.module.css';
 
 const Scoreboard = ({ score: { completed, failedAttempts } }) => {
   return (
-    <div>
-      Completed: {completed} - Failed: {failedAttempts}
+    <div className={styles.scoreWrapper}>
+      <ScoreChip score={completed} text="Completed" primary />
+      <ScoreChip score={failedAttempts} text="Failed" secondary />
     </div>
   );
 };

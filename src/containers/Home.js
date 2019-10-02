@@ -6,7 +6,7 @@ import logo from '../assets/logo.svg';
 
 const Home = ({ onStart }) => {
   return (
-    <Container>
+    <Container center>
       <img src={logo} className={styles.homeLogo} alt="logo" />
       <button type="button" className={styles.homeButton} onClick={onStart}>
         Start Training
