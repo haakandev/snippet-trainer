@@ -3,18 +3,15 @@ import PropTypes from 'prop-types';
 import Button from '@material-ui/core/Button';
 import styles from './Game.module.css';
 import { Container, Scoreboard, Snippet } from '../components';
-import defaultSnippets from '../defaultSnippets';
 import CustomSnackbar from '../components/Snackbar';
 
 const MAX_COMPLETED_SNIPPETS = 10;
 
-const snippetKeys = Object.keys(defaultSnippets);
-const snippets = defaultSnippets;
+const getRandomSnippetKey = keys => keys[Math.floor(Math.random() * keys.length)];
 
-const getRandomSnippetKey = () => snippetKeys[Math.floor(Math.random() * snippetKeys.length)];
-
-const Game = ({ onEnd }) => {
+const Game = ({ snippetsFile, onEnd }) => {
   const inputEl = useRef(null);
+  const [snippetKeys] = useState(Object.keys(snippetsFile.content));
   const [currentSnippetKey, setCurrentSnippetKey] = useState(null);
   const [currentScore, setCurrentScore] = useState({ completed: 0, failedAttempts: 0, skipped: 0 });
   const [usedSnippets, setUsedSnippets] = useState([]);
@@ -23,7 +20,7 @@ const Game = ({ onEnd }) => {
 
   const submit = useCallback(() => {
     if (inputEl.current.value !== '') {
-      if (inputEl.current.value === snippets[currentSnippetKey].prefix) {
+      if (inputEl.current.value === snippetsFile.content[currentSnippetKey].prefix) {
         setUsedSnippets(k => [...k, currentSnippetKey]);
         setCurrentScore(oldScore => ({ ...oldScore, completed: oldScore.completed + 1 }));
         inputEl.current.value = '';
@@ -34,7 +31,7 @@ const Game = ({ onEnd }) => {
         }));
       }
     }
-  }, [currentSnippetKey]);
+  }, [currentSnippetKey, snippetsFile.content]);
 
   useEffect(() => {
     const onSubmit = event => {
@@ -60,19 +57,19 @@ const Game = ({ onEnd }) => {
   }, [gameOver]);
 
   useEffect(() => {
-    let nextSnippetKey = getRandomSnippetKey();
+    let nextSnippetKey = getRandomSnippetKey(snippetKeys);
     while (usedSnippets.includes(nextSnippetKey)) {
-      nextSnippetKey = getRandomSnippetKey();
+      nextSnippetKey = getRandomSnippetKey(snippetKeys);
     }
     setCurrentSnippetKey(nextSnippetKey);
-  }, [usedSnippets]);
+  }, [usedSnippets, snippetKeys]);
 
   useEffect(() => {
     const remainingSnippets = snippetKeys.length - usedSnippets.length;
     if (currentScore.completed >= MAX_COMPLETED_SNIPPETS || remainingSnippets <= 0) {
       setGameOver(true);
     }
-  }, [currentScore, usedSnippets]);
+  }, [currentScore, usedSnippets, snippetKeys]);
 
   const skip = () => {
     setUsedSnippets(k => [...k, currentSnippetKey]);
@@ -92,7 +89,7 @@ const Game = ({ onEnd }) => {
     <Container>
       <Scoreboard score={currentScore} time={seconds} />
       {currentSnippetKey && (
-        <Snippet snippet={{ [currentSnippetKey]: snippets[currentSnippetKey] }} />
+        <Snippet snippet={{ [currentSnippetKey]: snippetsFile.content[currentSnippetKey] }} />
       )}
       <input className={styles.gameInput} ref={inputEl} type="text" disabled={gameOver} />
       <div className={styles.gameInputGroup}>
@@ -117,6 +114,23 @@ const Game = ({ onEnd }) => {
 
 Game.propTypes = {
   onEnd: PropTypes.func.isRequired,
+  snippetsFile: PropTypes.shape({
+    name: PropTypes.string.isRequired,
+    content: (props, propName) => {
+      Object.values(props[propName]).forEach(value => {
+        if (typeof value !== 'object') {
+          return new Error('Each property in snippetsFile.content must be an object');
+        }
+        if (!value.prefix) {
+          return new Error('Each object in snippetsFile.content must contain a prefix property');
+        }
+        if (!value.body) {
+          return new Error('Each object in snippetsFile.content must contain a body property');
+        }
+        return null;
+      });
+    },
+  }).isRequired,
 };
 
 export default Game;

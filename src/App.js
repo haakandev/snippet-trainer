@@ -3,6 +3,7 @@ import React, { useCallback, useState } from 'react';
 import { useDropzone } from 'react-dropzone';
 import Game from './containers/Game';
 import Home from './containers/Home';
+import defaultSnippets from './defaultSnippets';
 
 const hasProperty = (obj, prop) => Object.prototype.hasOwnProperty.call(obj, prop);
 const valueIsType = (value, type, arraysAllowed = false) => {
@@ -96,7 +97,12 @@ const App = () => {
     );
   }
 
-  return <Game onEnd={() => setGameActive(false)} />;
+  return (
+    <Game
+      snippetsFile={currentFile || { name: 'Default React snippets', content: defaultSnippets }}
+      onEnd={() => setGameActive(false)}
+    />
+  );
 };
 
 export default App;
