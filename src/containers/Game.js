@@ -11,17 +11,16 @@ const getRandomSnippetKey = keys => keys[Math.floor(Math.random() * keys.length)
 
 const Game = ({ snippetsFile, onEnd }) => {
   const inputEl = useRef(null);
-  const [snippetKeys] = useState(Object.keys(snippetsFile.content));
+  const [snippetKeys, setSnippetKeys] = useState(Object.keys(snippetsFile.content));
   const [currentSnippetKey, setCurrentSnippetKey] = useState(null);
   const [currentScore, setCurrentScore] = useState({ completed: 0, failedAttempts: 0, skipped: 0 });
-  const [usedSnippets, setUsedSnippets] = useState([]);
   const [seconds, setSeconds] = useState(0);
   const [gameOver, setGameOver] = useState(false);
 
   const submit = useCallback(() => {
     if (inputEl.current.value !== '') {
       if (inputEl.current.value === snippetsFile.content[currentSnippetKey].prefix) {
-        setUsedSnippets(k => [...k, currentSnippetKey]);
+        setSnippetKeys(keys => keys.filter(key => key !== currentSnippetKey));
         setCurrentScore(oldScore => ({ ...oldScore, completed: oldScore.completed + 1 }));
         inputEl.current.value = '';
       } else {
@@ -32,6 +31,12 @@ const Game = ({ snippetsFile, onEnd }) => {
       }
     }
   }, [currentSnippetKey, snippetsFile.content]);
+
+  const skip = useCallback(() => {
+    setSnippetKeys(keys => keys.filter(key => key !== currentSnippetKey));
+    setCurrentScore(oldScore => ({ ...oldScore, skipped: oldScore.skipped + 1 }));
+    inputEl.current.value = '';
+  }, [currentSnippetKey]);
 
   useEffect(() => {
     const onSubmit = event => {
@@ -57,24 +62,17 @@ const Game = ({ snippetsFile, onEnd }) => {
   }, [gameOver]);
 
   useEffect(() => {
-    let nextSnippetKey = getRandomSnippetKey(snippetKeys);
-    while (usedSnippets.includes(nextSnippetKey)) {
-      nextSnippetKey = getRandomSnippetKey(snippetKeys);
+    if (snippetKeys.length <= 0) {
+      setSnippetKeys(Object.keys(snippetsFile.content));
     }
-    setCurrentSnippetKey(nextSnippetKey);
-  }, [usedSnippets, snippetKeys]);
+    setCurrentSnippetKey(getRandomSnippetKey(snippetKeys));
+  }, [snippetKeys, snippetsFile.content]);
 
   useEffect(() => {
-    const remainingSnippets = snippetKeys.length - usedSnippets.length;
-    if (currentScore.completed >= MAX_COMPLETED_SNIPPETS || remainingSnippets <= 0) {
+    if (currentScore.completed >= MAX_COMPLETED_SNIPPETS) {
       setGameOver(true);
     }
-  }, [currentScore, usedSnippets, snippetKeys]);
-
-  const skip = () => {
-    setUsedSnippets(k => [...k, currentSnippetKey]);
-    setCurrentScore(oldScore => ({ ...oldScore, skipped: oldScore.skipped + 1 }));
-  };
+  }, [currentScore]);
 
   const handleCloseSnackbar = (event, reason) => {
     if (reason === 'clickaway') {
