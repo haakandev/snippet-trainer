@@ -16,3 +16,18 @@
   align-items: center;
   text-align: center;
 }
+
+.fileError {
+  color: lightcoral;
+  text-align: center;
+}
+
+.fileDescription {
+  color: white;
+  text-align: center;
+}
+
+.highscore {
+  color: white;
+  text-align: center;
+}
