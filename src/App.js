@@ -1,6 +1,7 @@
 /* eslint-disable react/jsx-props-no-spreading */
 import React, { useCallback, useState } from 'react';
 import { useDropzone } from 'react-dropzone';
+import styles from './App.module.css';
 import Game from './containers/Game';
 import Home from './containers/Home';
 import defaultSnippets from './defaultSnippets';
@@ -81,8 +82,8 @@ const App = () => {
 
   if (!isGameActive) {
     return (
-      <>
-        <div {...getRootProps()}>
+      <div className={styles.app}>
+        <div className={styles.dropZone} {...getRootProps()}>
           <input {...getInputProps()} />
           {isDragActive ? (
             <p>Drop the snippets file here ...</p>
@@ -93,15 +94,17 @@ const App = () => {
         {!!fileError && <p>{fileError}</p>}
         {!!currentFile && <p>Current snippet file: {currentFile.name}</p>}
         <Home onStart={() => setGameActive(true)} />
-      </>
+      </div>
     );
   }
 
   return (
-    <Game
-      snippetsFile={currentFile || { name: 'Default React snippets', content: defaultSnippets }}
-      onEnd={() => setGameActive(false)}
-    />
+    <div className={styles.app}>
+      <Game
+        snippetsFile={currentFile || { name: 'Default React snippets', content: defaultSnippets }}
+        onEnd={() => setGameActive(false)}
+      />
+    </div>
   );
 };
 
