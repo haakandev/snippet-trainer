@@ -85,8 +85,13 @@ const Game = ({ snippetsFile, onEnd }) => {
   useEffect(() => {
     if (currentScore.completed >= MAX_COMPLETED_SNIPPETS) {
       setGameOver(true);
+      const fastestScore = localStorage.getItem('fastestScore') || -1;
+      console.log('fastestScore', fastestScore);
+      if (seconds < fastestScore || fastestScore === -1) {
+        localStorage.setItem('fastestScore', seconds);
+      }
     }
-  }, [currentScore]);
+  }, [currentScore, seconds]);
 
   const handleCloseSnackbar = (event, reason) => {
     if (reason === 'clickaway') {

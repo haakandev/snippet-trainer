@@ -81,6 +81,7 @@ const App = () => {
   const { getRootProps, getInputProps, isDragActive } = useDropzone({ onDrop });
 
   if (!isGameActive) {
+    const fastestScore = localStorage.getItem('fastestScore');
     return (
       <div className={styles.app}>
         <div className={styles.dropZone} {...getRootProps()}>
@@ -94,6 +95,12 @@ const App = () => {
         {!!fileError && <p>{fileError}</p>}
         {!!currentFile && <p>Current snippet file: {currentFile.name}</p>}
         <Home onStart={() => setGameActive(true)} />
+        <h5
+          className={styles.highscore}
+          style={{ fontVariantNumeric: 'tabular-nums' }}
+        >{`Highscore: ${Math.floor(fastestScore / 3600)}:${`0${Math.floor(
+          fastestScore / 60
+        )}`.slice(-2)}:${`0${Math.floor(fastestScore % 60)}`.slice(-2)}`}</h5>
       </div>
     );
   }
