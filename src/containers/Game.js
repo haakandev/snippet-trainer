@@ -17,6 +17,7 @@ const Game = ({ snippetsFile, onEnd }) => {
   const [seconds, setSeconds] = useState(0);
   const [gameOver, setGameOver] = useState(false);
 
+  // Submit entered value and adjust score
   const submit = useCallback(() => {
     if (inputEl.current.value !== '') {
       if (inputEl.current.value === snippetsFile.content[currentSnippetKey].prefix) {
@@ -32,12 +33,14 @@ const Game = ({ snippetsFile, onEnd }) => {
     }
   }, [currentSnippetKey, snippetsFile.content]);
 
+  // Skip the current snippet
   const skip = useCallback(() => {
     setSnippetKeys(keys => keys.filter(key => key !== currentSnippetKey));
     setCurrentScore(oldScore => ({ ...oldScore, skipped: oldScore.skipped + 1 }));
     inputEl.current.value = '';
   }, [currentSnippetKey]);
 
+  // Listeners for hitting 'enter' to submit or 'esc' to skip
   useEffect(() => {
     const onSubmit = event => {
       if (event.keyCode === 13) {
@@ -45,12 +48,21 @@ const Game = ({ snippetsFile, onEnd }) => {
         submit();
       }
     };
+    const onSkip = event => {
+      if (event.keyCode === 27) {
+        event.preventDefault();
+        skip();
+      }
+    };
     window.addEventListener('keyup', onSubmit);
+    window.addEventListener('keyup', onSkip);
     return () => {
       window.removeEventListener('keyup', onSubmit);
+      window.removeEventListener('keyup', onSkip);
     };
-  }, [currentSnippetKey, submit]);
+  }, [currentSnippetKey, submit, skip]);
 
+  // Handle game time
   useEffect(() => {
     let interval = null;
     if (!gameOver) {
@@ -61,6 +73,7 @@ const Game = ({ snippetsFile, onEnd }) => {
     return () => clearInterval(interval);
   }, [gameOver]);
 
+  // Set new snippet when current one is added to usedSnippets
   useEffect(() => {
     if (snippetKeys.length <= 0) {
       setSnippetKeys(Object.keys(snippetsFile.content));
@@ -68,6 +81,7 @@ const Game = ({ snippetsFile, onEnd }) => {
     setCurrentSnippetKey(getRandomSnippetKey(snippetKeys));
   }, [snippetKeys, snippetsFile.content]);
 
+  // End game when the MAX number of completed snippets is reached
   useEffect(() => {
     if (currentScore.completed >= MAX_COMPLETED_SNIPPETS) {
       setGameOver(true);
