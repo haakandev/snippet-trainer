@@ -92,8 +92,10 @@ const App = () => {
             <p>Drag &apos;n&apos; drop a snippet file (JSON) here, or click to select file</p>
           )}
         </div>
-        {!!fileError && <p>{fileError}</p>}
-        {!!currentFile && <p>Current snippet file: {currentFile.name}</p>}
+        {!!fileError && <p className={styles.fileError}>{fileError}</p>}
+        {!!currentFile && (
+          <p className={styles.fileDescription}>Current snippet file: {currentFile.name}</p>
+        )}
         <Home onStart={() => setGameActive(true)} />
         <h5
           className={styles.highscore}
