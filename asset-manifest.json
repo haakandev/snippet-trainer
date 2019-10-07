@@ -1,15 +1,15 @@
 {
   "files": {
-    "main.css": "/snippet-trainer/static/css/main.829584f1.chunk.css",
-    "main.js": "/snippet-trainer/static/js/main.9b1c3f52.chunk.js",
-    "main.js.map": "/snippet-trainer/static/js/main.9b1c3f52.chunk.js.map",
+    "main.css": "/snippet-trainer/static/css/main.824c3796.chunk.css",
+    "main.js": "/snippet-trainer/static/js/main.f87a4013.chunk.js",
+    "main.js.map": "/snippet-trainer/static/js/main.f87a4013.chunk.js.map",
     "runtime-main.js": "/snippet-trainer/static/js/runtime-main.ea18cbcc.js",
     "runtime-main.js.map": "/snippet-trainer/static/js/runtime-main.ea18cbcc.js.map",
-    "static/js/2.4f27a556.chunk.js": "/snippet-trainer/static/js/2.4f27a556.chunk.js",
-    "static/js/2.4f27a556.chunk.js.map": "/snippet-trainer/static/js/2.4f27a556.chunk.js.map",
+    "static/js/2.2ac06cd4.chunk.js": "/snippet-trainer/static/js/2.2ac06cd4.chunk.js",
+    "static/js/2.2ac06cd4.chunk.js.map": "/snippet-trainer/static/js/2.2ac06cd4.chunk.js.map",
     "index.html": "/snippet-trainer/index.html",
-    "precache-manifest.7ffa3f7f29660a6bad6cbfc67fcc4a41.js": "/snippet-trainer/precache-manifest.7ffa3f7f29660a6bad6cbfc67fcc4a41.js",
+    "precache-manifest.1856f8935f398cf32c9779cf0279e905.js": "/snippet-trainer/precache-manifest.1856f8935f398cf32c9779cf0279e905.js",
     "service-worker.js": "/snippet-trainer/service-worker.js",
-    "static/css/main.829584f1.chunk.css.map": "/snippet-trainer/static/css/main.829584f1.chunk.css.map"
+    "static/css/main.824c3796.chunk.css.map": "/snippet-trainer/static/css/main.824c3796.chunk.css.map"
   }
 }
